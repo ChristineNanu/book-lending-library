@@ -1,13 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  user: one
-  book: one
-  due_date: 2025-02-11
+  book: one   
+  user: one   
+  borrowed_at: <%= Time.current %>
+  due_date: <%= 7.days.from_now %>
   returned: false
 
 two:
-  user: two
-  book: two
-  due_date: 2025-02-11
+  book: two   
+  user: two  
+  borrowed_at: <%= Time.current %>
+  due_date: <%= Time.now + 2.weeks %>
   returned: false
