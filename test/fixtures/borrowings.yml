@@ -1,13 +1,15 @@
 one:
-  book: one   
-  user: one   
+  id: 1
+  book_id: 1  # Reference book by ID
+  user_id: 1  
   borrowed_at: <%= Time.current %>
   due_date: <%= 7.days.from_now %>
   returned: false
 
 two:
-  book: two   
-  user: two  
+  id: 2
+  book_id: 2  # Reference book by ID
+  user_id: 2   
   borrowed_at: <%= Time.current %>
-  due_date: <%= Time.now + 2.weeks %>
+  due_date: <%= 2.weeks.from_now %>
   returned: false
