@@ -70,3 +70,7 @@ end
 gem "rspec-rails", "~> 7.1", :groups => [:development, :test]
 
 gem 'rails-controller-testing'
+
+gem 'bcrypt', '~> 3.1.7'
+
+gem 'minitest'

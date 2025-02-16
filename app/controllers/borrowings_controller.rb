@@ -1,25 +1,42 @@
 class BorrowingsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_book, only: [:create]
+  before_action :set_borrowing, only: [:show, :update, :destroy]
 
   def create
-    if @book.available?
-      borrowing = current_user.borrowings.create(book: @book)
-      redirect_to books_path, notice: "You have successfully borrowed #{@book.title}!"
+    @borrowing = Borrowing.new(borrowing_params)
+
+    if @borrowing.save
+      redirect_to borrowings_path, notice: 'Book borrowed successfully.'
     else
-      redirect_to books_path, alert: "Book is already borrowed."
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    borrowing = current_user.borrowings.find(params[:id])
-    borrowing.update(returned: true)
-    redirect_to user_profile_path, notice: "Book returned successfully!"
+    if @borrowing.update(borrowing_params)
+      redirect_to borrowing_path(@borrowing), notice: 'Borrowing updated.'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @borrowing.destroy
+    redirect_to borrowings_path, notice: 'Borrowing record deleted.'
+  end
+
+  def show
+    redirect_to borrowing_path(@borrowing) and return if @borrowing.returned?
+
+    @borrowing.update(due_date: Time.now) if @borrowing.due_date < Time.now
   end
 
   private
 
-  def set_book
-    @book = Book.find(params[:book_id])
+  def set_borrowing
+    @borrowing = Borrowing.find(params[:id])
+  end
+
+  def borrowing_params
+    params.require(:borrowing).permit(:user_id, :book_id, :due_date, :returned)
   end
 end
